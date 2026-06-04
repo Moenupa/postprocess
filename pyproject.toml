@@ -1,0 +1,68 @@
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[project]
+name = "postprocess"
+version = "0.1.0"
+description = "The missing data postprocessing library for LLM/VLM SFT/RL/OPD."
+readme = "README.md"
+requires-python = ">=3.12,<3.15"
+dependencies = [
+    # io
+    "datasets[vision]<4.8",
+    "pandas[excel]",
+    "fastapi[standard]<1",
+    "networkx",
+    # processing
+    "scikit-learn>=1.8.0",
+    "math-verify",
+    # interaction & friendly ui
+    "typer",
+    "seaborn",
+]
+
+[project.optional-dependencies]
+jupyter = [
+    "ipykernel",
+]
+
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-xdist",
+]
+
+[tool.ruff.lint]
+ignore = [
+    "C408",  # collection
+    "E501",  # line too long
+]
+extend-select = [
+    "C",      # complexity
+    "E",      # error
+    "F",      # pyflakes
+    "I",      # isort
+    "W",      # warning
+    "UP",     # pyupgrade
+    "PT009",  # pytest assert
+    "RUF022", # sort __all__
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["dair"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-vv --import-mode=importlib"
+filterwarnings = [
+]
+markers = [
+]
