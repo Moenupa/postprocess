@@ -14,6 +14,7 @@ dependencies = [
     "pandas[excel]",
     "fastapi[standard]<1",
     "networkx",
+    "openai",
     # processing
     "scikit-learn>=1.8.0",
     "math-verify",
@@ -36,11 +37,9 @@ dev = [
 
 [tool.ruff.lint]
 ignore = [
-    "C408",  # collection
     "E501",  # line too long
 ]
 extend-select = [
-    "C",      # complexity
     "E",      # error
     "F",      # pyflakes
     "I",      # isort
