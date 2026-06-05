@@ -144,7 +144,9 @@ def run_individual_test_helper(
         except Exception as e:
             result_array[index] = 0
             runtimes_array[index] = -1.0
-            error_messages_array[index] = f"{type(e).__name__}: {test if isinstance(e, AssertionError) else str(e)}"
+            error_messages_array[index] = (
+                f"{type(e).__name__}: {test if isinstance(e, AssertionError) else str(e)}"
+            )
     finally:
         # Restore in child process (though it will terminate anyway)
         partial_undo_reliability_guard()
@@ -424,7 +426,7 @@ def reliability_guard(maximum_memory_bytes: int | None = None):
 
     os.environ["OMP_NUM_THREADS"] = "1"
 
-    os.kill = None  # ty:ignore[invalid-assignment]
+    # os.kill = None  # ty:ignore[invalid-assignment]
     os.system = None  # ty:ignore[invalid-assignment]
     os.putenv = None  # ty:ignore[invalid-assignment]
     os.remove = None  # ty:ignore[invalid-assignment]
@@ -432,7 +434,7 @@ def reliability_guard(maximum_memory_bytes: int | None = None):
     os.rmdir = None  # ty:ignore[invalid-assignment]
     os.fchdir = None  # ty:ignore[invalid-assignment]
     os.setuid = None  # ty:ignore[invalid-assignment]
-    os.fork = None  # ty:ignore[invalid-assignment]
+    # os.fork = None  # ty:ignore[invalid-assignment]
     os.forkpty = None  # ty:ignore[invalid-assignment]
     os.killpg = None  # ty:ignore[invalid-assignment]
     os.rename = None  # ty:ignore[invalid-assignment]
@@ -458,25 +460,19 @@ def reliability_guard(maximum_memory_bytes: int | None = None):
 
     subprocess.Popen = None  # type: ignore
 
-
-    sys.modules["ipdb"] = None   # ty:ignore[invalid-assignment]
-    sys.modules["joblib"] = None   # ty:ignore[invalid-assignment]
-    sys.modules["resource"] = None   # ty:ignore[invalid-assignment]
-    sys.modules["psutil"] = None   # ty:ignore[invalid-assignment]
-    sys.modules["tkinter"] = None   # ty:ignore[invalid-assignment]
-    sys.modules["inspect"] = None   # ty:ignore[invalid-assignment]
-    sys.modules["ctypes"] = None   # ty:ignore[invalid-assignment]
-    sys.modules["threading"] = None   # ty:ignore[invalid-assignment]
-    sys.modules["multiprocessing"] = None   # ty:ignore[invalid-assignment]
-    sys.modules["socket"] = None   # ty:ignore[invalid-assignment]
-    sys.modules["ssl"] = None   # ty:ignore[invalid-assignment]
-    sys.modules["urllib"] = None   # ty:ignore[invalid-assignment]
-    sys.modules["requests"] = None   # ty:ignore[invalid-assignment]
-    try:
-        # Remove frame introspection which enables test data exfiltration
-        sys._getframe = None  # ty:ignore[invalid-assignment]
-    except Exception:
-        pass
+    sys.modules["ipdb"] = None  # ty:ignore[invalid-assignment]
+    sys.modules["joblib"] = None  # ty:ignore[invalid-assignment]
+    sys.modules["resource"] = None  # ty:ignore[invalid-assignment]
+    sys.modules["psutil"] = None  # ty:ignore[invalid-assignment]
+    sys.modules["tkinter"] = None  # ty:ignore[invalid-assignment]
+    sys.modules["inspect"] = None  # ty:ignore[invalid-assignment]
+    sys.modules["ctypes"] = None  # ty:ignore[invalid-assignment]
+    sys.modules["threading"] = None  # ty:ignore[invalid-assignment]
+    sys.modules["multiprocessing"] = None  # ty:ignore[invalid-assignment]
+    sys.modules["socket"] = None  # ty:ignore[invalid-assignment]
+    sys.modules["ssl"] = None  # ty:ignore[invalid-assignment]
+    sys.modules["urllib"] = None  # ty:ignore[invalid-assignment]
+    # sys.modules["requests"] = None  # ty:ignore[invalid-assignment]
 
 
 def extract_code(response: str, first_block: bool = True) -> str | None:

@@ -1,9 +1,8 @@
 import json
 
 import numpy as np
-import requests
 
-from postprocess.verifier.code.code_utils import extract_code
+from postprocess.verifier.code.code_utils import extract_code, get_successful_tests_fast
 
 TRUNCATED_FEEDBACK = "Truncated Attempt: Your previous response was too long and truncated because it reached the maximum response length. Try again with a shorter response."
 NO_CODEBLOCK_FEEDBACK = (
@@ -44,18 +43,11 @@ def compute_score(
 
     try:
         if isinstance(test_cases, list):
-            response = requests.post(
-                "http://localhost:1234/test_program",
-                json={
-                    "program": program,
-                    "tests": test_cases[:max_test_cases],
-                    "max_execution_time": 5.0,
-                },
+            results, runtimes, errors = get_successful_tests_fast(
+                program=program,
+                tests=test_cases,
+                max_execution_time=1.0,
             )
-            assert response.status_code == 200
-            data = response.json()
-            results: list[int] = data["results"]
-            errors: list[str] = data["errors"]
         elif isinstance(test_cases, dict):
             pass
 
