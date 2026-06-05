@@ -426,7 +426,7 @@ def reliability_guard(maximum_memory_bytes: int | None = None):
 
     os.environ["OMP_NUM_THREADS"] = "1"
 
-    # os.kill = None  # ty:ignore[invalid-assignment]
+    os.kill = None  # ty:ignore[invalid-assignment]
     os.system = None  # ty:ignore[invalid-assignment]
     os.putenv = None  # ty:ignore[invalid-assignment]
     os.remove = None  # ty:ignore[invalid-assignment]
@@ -434,7 +434,7 @@ def reliability_guard(maximum_memory_bytes: int | None = None):
     os.rmdir = None  # ty:ignore[invalid-assignment]
     os.fchdir = None  # ty:ignore[invalid-assignment]
     os.setuid = None  # ty:ignore[invalid-assignment]
-    # os.fork = None  # ty:ignore[invalid-assignment]
+    os.fork = None  # ty:ignore[invalid-assignment]
     os.forkpty = None  # ty:ignore[invalid-assignment]
     os.killpg = None  # ty:ignore[invalid-assignment]
     os.rename = None  # ty:ignore[invalid-assignment]
@@ -472,7 +472,7 @@ def reliability_guard(maximum_memory_bytes: int | None = None):
     sys.modules["socket"] = None  # ty:ignore[invalid-assignment]
     sys.modules["ssl"] = None  # ty:ignore[invalid-assignment]
     sys.modules["urllib"] = None  # ty:ignore[invalid-assignment]
-    # sys.modules["requests"] = None  # ty:ignore[invalid-assignment]
+    sys.modules["requests"] = None  # ty:ignore[invalid-assignment]
 
 
 def extract_code(response: str, first_block: bool = True) -> str | None:

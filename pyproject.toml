@@ -18,6 +18,7 @@ dependencies = [
     # processing
     "scikit-learn>=1.8.0",
     "math-verify",
+    "transformers<5",
     # interaction & friendly ui
     "typer",
     "seaborn",

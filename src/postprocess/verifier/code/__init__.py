@@ -45,8 +45,8 @@ def compute_score(
         if isinstance(test_cases, list):
             results, runtimes, errors = get_successful_tests_fast(
                 program=program,
-                tests=test_cases,
-                max_execution_time=1.0,
+                tests=test_cases[:max_test_cases],
+                max_execution_time=2.0,
             )
         elif isinstance(test_cases, dict):
             pass
