@@ -1,3 +1,4 @@
+import fnmatch
 import re
 from functools import partial
 
@@ -23,6 +24,19 @@ def filter_by_regex(
             partial(_excl_priority_filter, incl_pat=incl_pat, excl_pat=excl_pat), items
         )
     )
+
+
+def filter_by_fnmatch(
+    items: list[str], incl: list[str], excl: list[str], fallback: bool = True
+):
+    def fnmatch_filter(item: str) -> bool:
+        if incl and any(fnmatch.fnmatchcase(item, pattern) for pattern in incl):
+            return True
+        if excl and any(fnmatch.fnmatchcase(item, pattern) for pattern in excl):
+            return False
+        return fallback
+
+    return list(filter(fnmatch_filter, items))
 
 
 def _incl_priority_filter(

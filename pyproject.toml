@@ -7,7 +7,7 @@ name = "postprocess"
 version = "0.1.0"
 description = "The missing data postprocessing library for LLM/VLM SFT/RL/OPD."
 readme = "README.md"
-requires-python = ">=3.12,<3.15"
+requires-python = ">=3.12,<3.14"
 dependencies = [
     # io
     "datasets[vision]<4.8",
@@ -27,6 +27,9 @@ dependencies = [
 [project.optional-dependencies]
 jupyter = [
     "ipykernel",
+]
+torch = [
+    "torch>=2.8,<2.9",
 ]
 
 
