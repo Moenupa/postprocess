@@ -18,6 +18,7 @@ def parse_model_path(
     path: str,
     skip_validate: bool = False,
     remove_parts_regex: list[str] = ["actor", "huggingface", r"global_step_\d+"],
+    keep_step: bool = False,
 ) -> tuple[str, str, str]:
     r"""Parse model path into (train_method, model_name, model_id).
 
@@ -36,6 +37,8 @@ def parse_model_path(
     Returns:
         tuple[str, str, str]: (train_method, model_name, model_id)
     """
+    if keep_step:
+        path = path.replace("/global_step_", "@")
     parts = path.strip("/").split("/")
     if len(parts) < 2:
         raise ValueError(f"Invalid model path: {path!r}")
@@ -44,7 +47,7 @@ def parse_model_path(
         return "hf", parts[0], parts[1]
 
     # otherwise verify it is a correct local path
-    if not skip_validate:
+    if not skip_validate and not keep_step:
         model_metadata = Path(path) / "model.safetensors.index.json"
         assert model_metadata.is_file(), f"Model metadata not found: {model_metadata!r}"
 

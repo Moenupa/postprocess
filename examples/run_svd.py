@@ -98,18 +98,18 @@ def analyze_model_pair(
             eta=eta,
         ),
         layer_keys,
-        desc=f"Analyzing layers for {Path(path_a).name} -> {Path(path_b).name}",
+        desc=f"{path_a!r}->{path_b!r}",
         max_workers=min(max_workers, len(layer_keys)),
     )
 
     if not results:
-        typer.echo(f"No results for {path_a} -> {path_b}; nothing to save.")
+        typer.echo(f"[skipped] No results for {path_a} -> {path_b}.")
         return
 
     csv_path = (
         out_dir
-        / ".".join(parse_model_path(path_a))
-        / f"{'.'.join(parse_model_path(path_b))}.csv"
+        / ".".join(parse_model_path(path_a, keep_step=True))
+        / f"{'.'.join(parse_model_path(path_b, keep_step=True))}.csv"
     )
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(list(filter(lambda e: e is not None, results))).to_csv(
@@ -147,7 +147,7 @@ def main(
     eta: float = 1e-3,
     list_keys: bool = False,
     device: str = "cuda:0" if torch.cuda.is_available() else "cpu",
-    max_workers: int = 1,
+    max_workers: int = 4,
 ):
     model0 = AutoModelForCausalLM.from_pretrained(model_paths[0], dtype=torch.bfloat16)
     selected_keys = get_layer_keys(model0.state_dict(), layer_pattern, list_keys)
