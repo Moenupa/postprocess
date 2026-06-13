@@ -53,6 +53,7 @@ def main(
 
     if len(parquets) == 1:
         ds = Dataset.from_parquet(parquets[0])
+        out_dir = out_dir or Path(parquets[0]).parent
     else:
         ds_list = []
         for p in parquets:
@@ -61,13 +62,14 @@ def main(
                 _ds = _ds.shuffle(42).select(range(500))
             ds_list.append(_ds)
         ds = concatenate_datasets(ds_list)
+        out_dir = out_dir or Path(model)
 
-    if out_dir is None:
-        out_dir = Path(model)
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"{out_name}.parquet"
     if out_path.exists():
-        typer.Exit(1)
+        raise typer.Exit(1)
+    else:
+        typer.echo(f"Saving to {out_path}", err=True)
 
     ds: Dataset = ds.map(
         partial(get_response, model=model),

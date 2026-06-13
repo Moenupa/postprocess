@@ -24,8 +24,10 @@ def compute_tsne(
             "svd_solver": "randomized",
         }
     ) | {"random_state": SEED}
+    logger.info(f"Before PCA {embeddings.shape}")
     logger.info(f"Running PCA with {pca_kwargs}")
     embeddings = PCA(**pca_kwargs).fit_transform(embeddings)
+    logger.info(f"After PCA {embeddings.shape}")
 
     tsne_kwargs: dict = (tsne_kwargs or {}) | {"random_state": SEED, "n_jobs": -1}
     logger.info(f"Running t-SNE with {tsne_kwargs}")

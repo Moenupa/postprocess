@@ -40,7 +40,7 @@ def get_response(
         n=n,
         max_tokens=max_tokens,
         **add_kwargs,
-    )  # ty:ignore[no-matching-overload]
+    )
     out = {"responses": [choice.message.content for choice in completions.choices]}
     return out
 
@@ -72,7 +72,7 @@ def main(
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"{out_name}.parquet"
     if out_path.exists():
-        typer.Exit(1)
+        raise typer.Exit(1)
 
     ds: Dataset = ds.map(
         partial(get_response, model=model, n=n, max_tokens=max_tokens),
