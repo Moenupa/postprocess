@@ -1,4 +1,3 @@
-import logging
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -8,8 +7,9 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 
 from ..constant import SEED
+from ..log import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 def compute_tsne(
