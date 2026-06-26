@@ -3,9 +3,7 @@ import re
 from functools import partial
 
 
-def filter_by_regex(
-    items: list[str], incl: list[str], excl: list[str], whole_match: bool = False
-):
+def filter_by_regex(items: list[str], incl: list[str], excl: list[str], whole_match: bool = False):
     incl = [re.escape(pattern) for pattern in incl]
     excl = [re.escape(pattern) for pattern in excl]
 
@@ -19,16 +17,10 @@ def filter_by_regex(
     incl_pat = re.compile(incl_regex) if incl_regex else None
     excl_pat = re.compile(excl_regex) if excl_regex else None
 
-    return list(
-        filter(
-            partial(_excl_priority_filter, incl_pat=incl_pat, excl_pat=excl_pat), items
-        )
-    )
+    return list(filter(partial(_excl_priority_filter, incl_pat=incl_pat, excl_pat=excl_pat), items))
 
 
-def filter_by_fnmatch(
-    items: list[str], incl: list[str], excl: list[str], fallback: bool = True
-):
+def filter_by_fnmatch(items: list[str], incl: list[str], excl: list[str], fallback: bool = True):
     def fnmatch_filter(item: str) -> bool:
         if incl and any(fnmatch.fnmatchcase(item, pattern) for pattern in incl):
             return True

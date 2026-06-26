@@ -1,5 +1,8 @@
+from functools import partial
+
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
+import numpy as np
 
 from .legend import unify_legends
 from .tnse import plot_cluster_gt_heatmap, plot_tsne_against_selection
@@ -29,3 +32,17 @@ plt.rcParams.update(
         "mathtext.fontset": "cm",
     }
 )
+
+
+def _fwd(y, p: float):
+    y = np.asarray(y, float)
+    return np.sign(y) * np.abs(y) ** p
+
+
+def _inv(t, p: float):
+    t = np.asarray(t, float)
+    return np.sign(t) * np.abs(t) ** (1.0 / p)
+
+
+def ax_scale(ax: plt.Axes, p: float = 0.5) -> None:
+    ax.set_yscale("function", functions=(partial(_fwd, p=p), partial(_inv, p=p)))

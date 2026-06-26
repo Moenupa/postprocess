@@ -6,11 +6,12 @@ SEED = int(os.getenv("SEED", "42"))
 
 
 def extract_from_valid_names(
-    name: str, valid_names: list[str] = ["train", "val", "test"]
+    name: str,
+    valid_names: list[str] = ["train", "val", "test"],
 ) -> str:
-    for name in valid_names:
-        if name in name:
-            return name
+    for valid_name in valid_names:
+        if valid_name in name:
+            return valid_name
 
     raise ValueError(f"None of valid names {valid_names} found in {name!r}")
 

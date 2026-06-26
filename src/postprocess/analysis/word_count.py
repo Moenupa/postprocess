@@ -27,9 +27,7 @@ def count_word(
         dict: {'word1': [count_in_sol1, count_in_sol2, ...], 'word2': [...], ..., '#tokens_if_unclosed': [ntokens_if_unclosed_or_None_for_closed, ...]}
     """
 
-    WORD_RE = re.compile(
-        r"\b(" + "|".join(map(re.escape, words)) + r")\b", re.IGNORECASE
-    )
+    WORD_RE = re.compile(r"\b(" + "|".join(map(re.escape, words)) + r")\b", re.IGNORECASE)
 
     # </think> is in answer, then we only count the think part,
     # otherwise we regard as capped by length, where entire answer is think part
@@ -53,15 +51,9 @@ def count_word(
         )
         solutions_thinking_tokens = list(map(len, encoded["input_ids"]))
 
-    return {
-        word: [
-            Counter(map(str.lower, WORD_RE.findall(s))).get(word, 0) for s in solutions
-        ]
-        for word in words
-    } | {
+    return {word: [Counter(map(str.lower, WORD_RE.findall(s))).get(word, 0) for s in solutions] for word in words} | {
         "#tokens_if_unclosed": [
-            None if closed else ntokens
-            for closed, ntokens in zip(solutions_closed, solutions_thinking_tokens)
+            None if closed else ntokens for closed, ntokens in zip(solutions_closed, solutions_thinking_tokens)
         ]
         + [0],
     }

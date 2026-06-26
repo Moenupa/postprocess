@@ -54,6 +54,13 @@ def main(
     out_name: str = "v1",
     num_workers: int = 16,
 ):
+    if out_dir is None:
+        out_dir = Path(model)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / f"{out_name}.parquet"
+    if out_path.exists():
+        raise typer.Exit(1)
+
     wait_for_vllm_server()
 
     if len(parquets) == 1:
@@ -66,13 +73,6 @@ def main(
                 _ds = _ds.shuffle(42).select(range(500))
             ds_list.append(_ds)
         ds = concatenate_datasets(ds_list)
-
-    if out_dir is None:
-        out_dir = Path(model)
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f"{out_name}.parquet"
-    if out_path.exists():
-        raise typer.Exit(1)
 
     ds: Dataset = ds.map(
         partial(get_response, model=model, n=n, max_tokens=max_tokens),

@@ -56,9 +56,7 @@ def principal_mask(
     return mask
 
 
-def param_changed_mask(
-    W0: torch.Tensor, W1: torch.Tensor, eta: float = 1e-3
-) -> torch.Tensor:
+def param_changed_mask(W0: torch.Tensor, W1: torch.Tensor, eta: float = 1e-3) -> torch.Tensor:
     tol = eta * torch.maximum(W0.abs(), W1.abs())
     changed = (W1 - W0).abs() > tol
     return changed

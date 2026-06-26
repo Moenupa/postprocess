@@ -11,6 +11,7 @@ logging.basicConfig(
 )
 logging.getLogger("httpx").setLevel(logging.WARNING)
 
+
 def get_logger(name: str, logging_level: int | str | None = None) -> logging.Logger:
     logger = logging.getLogger(name)
     logger.setLevel(logging_level or LOGGING_LV or VERBOSE)

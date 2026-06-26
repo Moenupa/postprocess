@@ -51,9 +51,7 @@ def parse_model_path(
         model_metadata = Path(path) / "model.safetensors.index.json"
         assert model_metadata.is_file(), f"Model metadata not found: {model_metadata!r}"
 
-    parts = [
-        p for p in parts if not any(re.match(regex, p) for regex in remove_parts_regex)
-    ]
+    parts = [p for p in parts if not any(re.match(regex, p) for regex in remove_parts_regex)]
 
     assert len(parts) >= 3, f"Expected >= 3 parts (e.g. Qwen/Qwen3-8B): {path!r}"
     return parts[-3], parts[-2], parts[-1]
